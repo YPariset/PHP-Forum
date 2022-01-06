@@ -12,16 +12,41 @@
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        include_once "connection.php";
-        $co = new Connection();
-        $db = $co->getDB();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-        // Définition de la requête
-        $filter = [];
-        $option = [];
-        $read = new MongoDB\Driver\Query($filter, $option);
-        //Exécution de la requête
-        $cursor = $manager->executeQuery('db_php_forum.users', $read);
+        include_once "connection.php";
+        $connection = new Connection();
+        $manager = $connection->getManager();
+
+        if(isset($_GET["mod"])) {
+            $mod = $_GET["mod"];
+        } else {
+            $mod = "post";
+        }
+
+        switch ($mod) {
+            case 'post':
+                include_once "/Controller/PostManager.php";
+                $controler = new PostManager($manager);
+                break;
+            
+            default:
+                echo "Mod doesn't exist or you don't have the rights to be here !";
+                break;
+        }
+
+        // $filter  = [];
+        // $options = ['sort'=>array('_id'=>-1),'limit'=>3];
+
+        // $query = new MongoDB\Driver\Query($filter, $options);
+
+        // $cursor = $manager->executeQuery('Suplblog.Post', $query);
+
+        // foreach ($cursor as $document) {
+        //     var_dump($document);
+        // }
     ?>
 </body>
 </html>
