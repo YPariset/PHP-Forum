@@ -78,7 +78,7 @@ body {
 }
 
 .characterBackground {
-  background: url(/static/img/characterBackground.svg);
+  background: url(../img/characterBackground.svg);
   background-size: cover;
 }
 
