@@ -14,8 +14,8 @@ body {
   margin-top: 0.5rem;
 }
 
-.post__wrapper:not(.post__wrapper:last-child) {
-  margin-bottom: 1.5rem;
+.post__container:not(.post__container:last-child) {
+  margin-bottom: 1rem;
 }
 
 .icon-wrapper {
@@ -42,6 +42,10 @@ body {
   gap: 0.75rem;
 }
 
+.response-btn {
+  transform: translate3d(0, -50%, 0);
+}
+
 .post__date {
   line-height: 1.2rem !important;
 }
@@ -58,8 +62,12 @@ body {
   width: calc(100% - 50px);
 }
 
-.main__responses__wrapper {
+.main__responses__wrapper:not(.main__responses__wrapper.response) {
   height: calc(100% - (50px + (0.5rem * 2)));
+}
+
+.main__responses__wrapper.response {
+  height: calc(100% - (50px + (0.5rem * 2)) - (24px + (0.5rem * 2)));
 }
 
 .send-btn {

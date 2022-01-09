@@ -25,26 +25,72 @@
                     $posts = $this->model->getAll();
                     $users = $this->userModel->getAll();
                     if (isset($_GET["response"])){
-                        $postToRespond =  $this->model->getOneByOID($_GET["response"]);
-                        var_dump($postToRespond);
-                        if ($postToRespond == NULL) {
+                        $reponseTestOID = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['response']);
+                        if ($reponseTestOID) {
+                            $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                            if ($postToRespond == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                            }
+                            $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
+                        } else {
                             header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
                         }
                     }
-                    require "./View/post-view.php";
+                    include_once "./View/post-view.php";
                     break;
 
                 case 'user':
+                    if (isset($_GET["oid"])) {
+                        $oidPossible = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['oid']);
+                        if ($oidPossible) {
+                            $user = $this->userModel->getOneByOID($_GET["oid"]);
+                            if($user == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                            }
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                        }
+                    } else {
+                        header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                    }
                     $posts = $this->model->getAllByUserOID($_GET["oid"]);
                     $users = $this->userModel->getAll();
-                    require "./View/post-view.php";
+                    if (isset($_GET["response"])){
+                        $reponseTestOID = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['response']);
+                        if ($reponseTestOID) {
+                            $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                            if ($postToRespond == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                            }
+                            $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                        }
+                    }
+                    include_once "./View/post-view.php";
                     break;
 
                 case 'post':
-
+                    if (isset($_GET["response"])) {
+                        $data = [
+                            "content"=>htmlspecialchars($_POST["post"]),
+                            "created_at"=>new MongoDB\BSON\UTCDateTime((new DateTime('NOW'))->getTimestamp()*1000),
+                            "user_id"=>new MongoDB\BSON\ObjectID($_SESSION["oid"]),
+                            "post_id"=>new MongoDB\BSON\ObjectID($_GET["response"])
+                        ];
+                    } else {
+                        $data = [
+                            "content"=>htmlspecialchars($_POST["post"]),
+                            "created_at"=>new MongoDB\BSON\UTCDateTime((new DateTime('NOW'))->getTimestamp()*1000),
+                            "user_id"=>new MongoDB\BSON\ObjectID($_SESSION["oid"])
+                        ];
+                    }
+                    $this->model->insertPost($data);
+                    header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                    break;
 
                 default:
-                    echo "Action doesn't exist or you don't have the rights !";
+                    header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
                     break;
             }
         }

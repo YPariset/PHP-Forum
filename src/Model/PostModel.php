@@ -32,7 +32,7 @@ class PostModel {
 
     public function getAllByUserOID($userOid){
         $filter  = ["user_id"=>new MongoDB\BSON\ObjectID($userOid)];
-        $options = ['sort'=>array('created_at'=>1)];
+        $options = ['sort'=>array('created_at'=>1)]; 
 
         $query = new MongoDB\Driver\Query($filter, $options);
 
@@ -65,5 +65,16 @@ class PostModel {
         }
 
         return $result;
+    }
+
+    public function insertPost($data)
+    {
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $test = $bulk->insert($data);
+        if ($test == NULL) {
+            return false;
+        }
+        $this->manager->executeBulkWrite($this->collection, $bulk);
+        return true;
     }
 }

@@ -11,7 +11,11 @@
                 extend: {
                     width: {
                         'form': '450px',
-                    }
+                    },
+                    borderRadius: {
+                        'md-bottom': '0 0 0.375rem 0.375rem',
+                        'md-top': '0.375rem 0.375rem 0 0',
+                    },
                 }
             }
         }
