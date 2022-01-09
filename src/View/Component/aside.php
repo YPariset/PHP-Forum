@@ -26,7 +26,7 @@
                     echo 'class="user__wrapper flex items-center px-2 py-1 rounded-md transition-all duration-150 ease-in-out hover:bg-zinc-700 hover:transition-all hover:duration-150 hover:ease-in-out"';
                 }
             ?>
-            href="/licence13/PHP-Forum/src/index.php?mod=post&action=post&oid=<?= $user["user"]["_id"]['$oid'] ?>">
+            href="/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=<?= $user["user"]["_id"]['$oid'] ?>">
             <img class="mr-3 rounded-full" 
                 src="<?php if (isset($user["user"]["avatar"])) {
                     echo $user["user"]["avatar"];
@@ -43,7 +43,7 @@
     }
 ?>
     </div>
-    
+
     <a class="aside__bottom flex justify-between items-center w-full bg-zinc-900 px-4" href="">
         <div class="flex items-center">
             <img class="mr-3 rounded-full" 

@@ -1,7 +1,7 @@
 <?php include_once "../src/View/Component/aside.php"; ?>
 
 <main class="bg-zinc-700 h-screen">
-    <div class="main__responses__wrapper p-4 overflow-auto h-full">
+    <div class="main__responses__wrapper p-4 overflow-auto">
 <?php
     foreach ($posts as $post) {
         $post["user"] = $this->userModel->getOneByOID($post["post"]["user_id"]['$oid']);
@@ -30,9 +30,9 @@
                 <p class="text-xs opacity-50"><?= $responseTo["post"]["content"] ?></p>
             </div>
         </div>
-        <?php
-                }
-        ?>
+<?php
+        }
+?>
         <div class="post__wrapper">
             <img class="rounded-full"
                 src="<?php if (isset($post["user"]["avatar"])) {
@@ -52,18 +52,33 @@
                 <p><?= $post["post"]["content"] ?></p>
             </div>
         </div>
-        <?php
-            }
-        ?>
-    </div>
-    <!-- <form action="index.php?mod=post&action=post&oid=" method="post">
-        <input type="text" name="post" id="input_post" placeholder="Envoyer un post">
-
-    </form> -->
 <?php
-    if (isset($_SESSION["oid"])) {
+    }
 ?>
+    </div>
 
+<?php
+    if (isset($_GET["response"])) {
+?>
+    <div class="p-2">
+        <form class="response_form bg-zinc-600 flex rounded-md" action="index.php?mod=post&action=post&post=<?= isset($_GET["response"]) ?>" method="post">
+            <input class="p-2 bg-transparent border-0 outline-none focus:outline-none" type="text" name="post" placeholder="Envoyer un post">
+            <button class="send-btn flex justify-center items-center" type="submit" name="response">
+                <img src="../src/static/img/icon-send-white.svg" alt="Send" width="20" height="20" loading="lazy">
+            </button>
+        </form>
+    </div>
+<?php  
+    } else if (!isset($_GET["response"])) {
+?>
+    <div class="p-2">
+        <form class="response_form bg-zinc-600 flex rounded-md" action="index.php?mod=post&action=post" method="post">
+            <input class="p-2 bg-transparent border-0 outline-none focus:outline-none" type="text" name="post" placeholder="Envoyer un post">
+            <button class="send-btn flex justify-center items-center" type="submit" name="post">
+                <img src="../src/static/img/icon-send-white.svg" alt="Send" width="20" height="20" loading="lazy">
+            </button>
+        </form>
+    </div>
 <?php
     }
 ?>

@@ -24,14 +24,24 @@
                 case 'home':
                     $posts = $this->model->getAll();
                     $users = $this->userModel->getAll();
+                    if (isset($_GET["response"])){
+                        $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                        var_dump($postToRespond);
+                        if ($postToRespond == NULL) {
+                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                        }
+                    }
                     require "./View/post-view.php";
                     break;
 
-                case 'post':
+                case 'user':
                     $posts = $this->model->getAllByUserOID($_GET["oid"]);
                     $users = $this->userModel->getAll();
                     require "./View/post-view.php";
                     break;
+
+                case 'post':
+
 
                 default:
                     echo "Action doesn't exist or you don't have the rights !";

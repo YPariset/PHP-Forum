@@ -86,4 +86,15 @@ class UserModel {
 
         return $result;
     }
+
+    public function insertUser($data)
+    {
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $test = $bulk->insert($data);
+        if ($test == NULL) {
+            return false;
+        }
+        $this->manager->executeBulkWrite('Suplblog.User', $bulk);
+        return true;
+    }
 }

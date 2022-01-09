@@ -55,7 +55,7 @@
             break;
         
         default:
-            echo "Mod doesn't exist or you don't have the rights to be here !";
+            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
             break;
     }
 ?>

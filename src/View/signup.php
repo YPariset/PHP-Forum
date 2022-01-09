@@ -3,7 +3,7 @@
     <div class="h-full w-full md:flex md:justify-center md:items-center md:w-form md:h-max bg-zinc-700 p-6 md:rounded-lg md:shadow-lg">
       <div class="grid gap-4 w-full mt-10 md:mt-0">
         <h2 class="w-full text-center text-xl text-bold text-zinc-200">Create an account</h2>
-        <form id="signup" class="grid gap-4" method="post" action="/licence13/PHP-Forum/src/index.php?mod=user&action=login">
+        <form id="signup" class="grid gap-4" method="post" action="/licence13/PHP-Forum/src/index.php?mod=user&action=signup">
           <div class="grid gap-2">
             <label class="uppercase text-zinc-400 text-sm" for="email">Email</label>
             <input class="w-full bg-zinc-800 border border-zinc-900 rounded-sm p-2 focus:border focus:border-sky-500" type="email" name="email" value="" id="email" required/>
@@ -25,19 +25,25 @@
 <?php
     if(isset($emailError)) {
 ?>
-        <span class="bg-red-600 p-4 rounded-sm text-center"><?= $passwordError ?></span>
+        <span class="bg-red-600 p-4 rounded-sm text-center"><?= $emailError ?></span>
 <?php
     }
 
     if(isset($usernameError)) {
 ?>
         <span class="bg-red-600 p-4 rounded-sm text-center"><?= $usernameError ?></span>
-<?php  
+<?php
     }
 
     if(isset($passwordError)) {
 ?>
         <span class="bg-red-600 p-4 rounded-sm text-center"><?= $passwordError ?></span>
+<?php
+    }
+
+    if(isset($error)) {
+?>
+        <span class="bg-red-600 p-4 rounded-sm text-center"><?= $error ?></span>
 <?php   
     }
 ?>
