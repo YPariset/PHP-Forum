@@ -1,4 +1,3 @@
-
 <?php
     include_once "connection.php";
     include_once "./Model/PostModel.php";
@@ -25,15 +24,52 @@
                 case 'home':
                     $posts = $this->model->getAll();
                     $users = $this->userModel->getAll();
-                    require "./View/post-view.php";
+                    if (isset($_GET["response"])){
+                        $reponseTestOID = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['response']);
+                        if ($reponseTestOID) {
+                            $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                            if ($postToRespond == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
+                            }
+                            $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
+                        }
+                    }
+                    include_once "./View/post-view.php";
                     break;
 
-                case 'post':
+                case 'user':
+                    if (isset($_GET["oid"])) {
+                        $oidPossible = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['oid']);
+                        if ($oidPossible) {
+                            $user = $this->userModel->getOneByOID($_GET["oid"]);
+                            if($user == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
+                            }
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
+                        }
+                    } else {
+                        header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
+                    }
                     $posts = $this->model->getAllByUserOID($_GET["oid"]);
                     $users = $this->userModel->getAll();
-                    require "./View/post-view.php";
+                    if (isset($_GET["response"])){
+                        $reponseTestOID = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['response']);
+                        if ($reponseTestOID) {
+                            $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                            if ($postToRespond == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                            }
+                            $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                        }
+                    }
+                    include_once "./View/post-view.php";
                     break;
-
+                    
                 case 'update-profile':
                     $posts = $this->model->getAll();
                     $users = $this->userModel->getAll();
@@ -41,24 +77,24 @@
 
                     if ($user != NULL) {
                         if (isset($_POST['update-profile'])) { 
-                          
+
                             $data                   = new stdClass();
                             $data->email            = $_POST['email'];
                             $data->username         = $_POST['username'];
                             $data->password         = hash('sha256', ($_POST['password']));
-                            
+
                             $destination_path = "./static/img/";
                             $target_path = $destination_path . basename( $_FILES["fileToUpload"]["name"]);
-                    
+
                             move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_path);
-                            
+
                             $path = $target_path;
                             $type = pathinfo($path, PATHINFO_EXTENSION);
                             $img = file_get_contents($path);
                             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);    
-                            
+
                             $data->avatar = $base64;
-                            
+
                             $_id = $_SESSION['oid'];
                             $user = ['email' => $data->email,
                                             'username' => $data->username,
@@ -76,10 +112,29 @@
                         }
                     }   
                     require "./View/update.php";
+                    break;    
+
+                case 'post':
+                    if (isset($_GET["response"])) {
+                        $data = [
+                            "content"=>htmlspecialchars($_POST["post"]),
+                            "created_at"=>new MongoDB\BSON\UTCDateTime((new DateTime('NOW'))->getTimestamp()*1000),
+                            "user_id"=>new MongoDB\BSON\ObjectID($_SESSION["oid"]),
+                            "post_id"=>new MongoDB\BSON\ObjectID($_GET["response"])
+                        ];
+                    } else {
+                        $data = [
+                            "content"=>htmlspecialchars($_POST["post"]),
+                            "created_at"=>new MongoDB\BSON\UTCDateTime((new DateTime('NOW'))->getTimestamp()*1000),
+                            "user_id"=>new MongoDB\BSON\ObjectID($_SESSION["oid"])
+                        ];
+                    }
+                    $this->model->insertPost($data);
+                    header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
                     break;
 
                 default:
-                    echo "Action doesn't exist or you don't have the rights !";
+                    header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
                     break;
             }
         }
