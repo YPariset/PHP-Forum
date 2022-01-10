@@ -97,4 +97,21 @@ class UserModel {
         $this->manager->executeBulkWrite('Suplblog.User', $bulk);
         return true;
     }
+
+    public function updateUser($data)
+    {
+        $bulk = new MongoDB\Driver\BulkWrite;
+
+        try {
+            $test = $bulk->update(
+                ['_id' => new MongoDB\BSON\ObjectId($data['user_id'])],
+                ['$set' => ['email' => $data['email'], 'username' => $data['username'], 'password' => $data['password'], 'avatar' => $data['avatar']]]
+            );
+        } catch (MongoDB\Driver\InvalidArgumentException $e) {
+            
+        }
+       
+        $this->manager->executeBulkWrite('Suplblog.User', $bulk);
+        return true;
+    }
 }
