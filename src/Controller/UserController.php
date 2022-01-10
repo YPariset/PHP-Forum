@@ -14,12 +14,12 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=user&action=login");
+                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=user&action=login");
             }
             
             switch ($action) {
                 case 'login':
-                    if (isset($_POST['email']) && isset($_POST['password'])) {
+                    if (isset($_POST['login'])) {
                         $user = $this->model->getOneByEmail($_POST['email']);
                         if ($user != NULL) {
                             if ($user["password"] == hash('sha256', ($_POST['password']))) {
@@ -31,18 +31,37 @@
                                 if (isset($user["avatar"])) {
                                     $_SESSION["avatar"] = $user["avatar"];
                                 }
-                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
                             } else if ($user["password"] != hash('sha256', ($_POST['password']))) {
-                                $password_error = "Incorrect password";
+                                $passwordError = "Incorrect password";
                             }
                         } else {
-                            $email_error = "There is no account with ".$_POST['email'];
+                            $emailError = "There is no account with ".$_POST['email'];
                         }
                     }
                     include_once "./View/login.php";
                     break;
 
                 case 'signup':
+                    if (isset($_POST['signup'])) {
+                        $userByEmail = $this->model->getOneByEmail($_POST['email']);
+                        if ($userByEmail == NULL) {
+                            $userByUsername = $this->model->getOneByEmail($_POST['username']);
+                            if ($userByUsername == NULL) {
+                                $passwordConfirm = preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/',$password);
+
+                                if ($uppercase || $lowercase || $number || strlen($_POST['password']) >= 8) {
+                                    
+                                } else {
+                                    $passwordError = "Your";
+                                }
+                            } else {
+                                $usernameError = "This username is already taken";
+                            }
+                        } else {
+                            $emailError = "There is already an account with ".$_POST['email'];
+                        }
+                    }
                     // if (isset($_POST['Submit'])) {
                     //     # Check if passwords are matching
                     //     $data                   = new stdClass();
@@ -77,7 +96,7 @@
                 
                 case "logout":
                     session_destroy();
-                    header('Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home');
+                    header('Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home');
                     break;
 
                 default:
