@@ -14,7 +14,7 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=user&action=login");
+                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=user&action=login");
             }
             
             switch ($action) {
@@ -31,7 +31,7 @@
                                 if (isset($user["avatar"])) {
                                     $_SESSION["avatar"] = $user["avatar"];
                                 }
-                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
                             } else if ($user["password"] != hash('sha256', ($_POST['password']))) {
                                 $passwordError = "Incorrect password";
                             }
