@@ -132,6 +132,12 @@ main.active {
   margin-right: 6px;
 }
 
+/* update.php */
+
+.update__wrapper {
+  max-width: 600px;
+}
+
 /* login.php && signup.php */
 
 .bg-characterBackground {

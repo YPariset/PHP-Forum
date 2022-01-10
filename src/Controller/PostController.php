@@ -1,8 +1,8 @@
 
 <?php
-    include_once "connection.php";
-    include_once "./Model/PostModel.php";
-    include_once "./Model/UserModel.php";
+    include_once "./src/connection.php";
+    include_once "./src/Model/PostModel.php";
+    include_once "./src/Model/UserModel.php";
     
     class PostController {
         private $manager;
@@ -18,7 +18,7 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
             }
             
             switch ($action) {
@@ -30,14 +30,14 @@
                         if ($reponseTestOID) {
                             $postToRespond =  $this->model->getOneByOID($_GET["response"]);
                             if ($postToRespond == NULL) {
-                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                             }
                             $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
                         } else {
-                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                         }
                     }
-                    include_once "./View/post-view.php";
+                    include_once "./src/View/post-view.php";
                     break;
 
                 case 'user':
@@ -47,13 +47,13 @@
                         if ($oidPossible) {
                             $userToCheck = $this->userModel->getOneByOID($_GET["oid"]);
                             if($userToCheck == NULL) {
-                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                             }
                         } else {
-                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                         }
                     } else {
-                        header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                        header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                     }
                     $posts = $this->model->getAllByUserOID($_GET["oid"]);
                     $users = $this->userModel->getAll();
@@ -62,14 +62,14 @@
                         if ($reponseTestOID) {
                             $postToRespond =  $this->model->getOneByOID($_GET["response"]);
                             if ($postToRespond == NULL) {
-                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=user&oid=".$_GET["oid"]);
                             }
                             $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
                         } else {
-                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=user&oid=".$_GET["oid"]);
                         }
                     }
-                    include_once "./View/post-view.php";
+                    include_once "./src/View/post-view.php";
                     break;
 
                 case 'post':
@@ -88,7 +88,7 @@
                         ];
                     }
                     $this->model->insertPost($data);
-                    header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                     break;
 
                 case 'update-profile':
@@ -131,11 +131,11 @@
                             $successUpdate = "Successfully updated";
                         }
                     }   
-                    require "./View/update.php";
+                    require "./src/View/update.php";
                     break;
 
                 default:
-                    header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                     break;
             }
         }

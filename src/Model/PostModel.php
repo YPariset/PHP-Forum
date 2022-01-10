@@ -1,5 +1,4 @@
 <?php
-
 class PostModel {
     private $manager;
     private $collection = "Suplblog.Post";

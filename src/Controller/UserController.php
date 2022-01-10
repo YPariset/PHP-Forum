@@ -1,6 +1,6 @@
 <?php
-    include_once "connection.php";
-    include_once "./Model/UserModel.php";
+    include_once "./src/connection.php";
+    include_once "./src/Model/UserModel.php";
     
     class UserController {
         private $manager;
@@ -14,7 +14,7 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=user&action=login");
+                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=user&action=login");
             }
             
             switch ($action) {
@@ -31,7 +31,7 @@
                                 if (isset($user["avatar"])) {
                                     $_SESSION["avatar"] = $user["avatar"];
                                 }
-                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                             } else if ($user["password"] != hash('sha256', ($_POST['password']))) {
                                 $passwordError = "Incorrect password";
                             }
@@ -39,7 +39,7 @@
                             $emailError = "There is no account with ".$_POST['email'];
                         }
                     }
-                    include_once "./View/login.php";
+                    include_once "./src/View/login.php";
                     break;
 
                 case 'signup':
@@ -70,7 +70,7 @@
                                             $_SESSION["password"] = $user["password"];
                                             $_SESSION["username"] = $user["username"];
                                             $_SESSION["admin"] = $user["admin"];
-                                            header('Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home');
+                                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                                         } else {
                                             $error = "An error as occured, try later";
                                         }
@@ -87,16 +87,16 @@
                             $emailError = "There is already an account with ".$_POST['email'];
                         }
                     }
-                    include_once "./View/signup.php";
+                    include_once "./src/View/signup.php";
                     break;
                 
                 case "logout":
                     session_destroy();
-                    header('Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=user&action=login');
+                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=user&action=login");
                     break;
 
                 default:
-                    header('Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home');
+                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
                     break;
             }
         }

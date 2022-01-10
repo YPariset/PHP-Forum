@@ -1,10 +1,10 @@
-<?php include_once "../src/View/Component/aside.php"; ?>
+<?php include_once "./src/View/Component/aside.php"; ?>
 
 <main class="bg-zinc-700 transition-all duration-200 ease-in-out h-screen md:translate-x-0">
     <div class="flex p-4 bg-zinc-800 md:hidden">
-        <img class="burger block mr-4" src="../src/static/img/icon-burger-white.svg" alt="avatar" width="30" height="20" loading="lazy">
+        <img class="burger block mr-4" src="./src/static/img/icon-burger-white.svg" alt="avatar" width="30" height="20" loading="lazy">
         <p class="flex items-center">
-            <img class="opacity-40 mr-2" src="../src/static/img/icon-all-white.svg" alt="all icon" width="15" height="15" loading="lazy">
+            <img class="opacity-40 mr-2" src="./src/static/img/icon-all-white.svg" alt="all icon" width="15" height="15" loading="lazy">
             <?= isset($userToCheck["username"]) == "user" ? $userToCheck["username"] : "All" ?>
         </p>
     </div>
@@ -16,11 +16,13 @@
         if(isset($post["post"]["post_id"])) {
             $responseTo = $this->model->getOneByOID($post["post"]["post_id"]['$oid']);
             $responseTo["user"] = $this->userModel->getOneByOID($responseTo["post"]["user_id"]['$oid']);
+        } else {
+            $responseTo = NULL;
         }
 ?>
         <div class="post__container <?= isset($responseTo) ? ($responseTo["user"]["_id"]['$oid'] == $_SESSION["oid"] ? "bg-yellow-600 border-l-2 border-yellow-500" : "") : "" ?>">
 <?php
-        if(isset($responseTo)) {
+        if(isset($responseTo) && $responseTo != NULL) {
 ?>
             <div class="response__wrapper pt-1 px-4">
                 <div class="response__thread">
@@ -28,7 +30,7 @@
                 </div>
                 <div class="flex items-center">
                     <img class="rounded-full mr-2"
-                        src="<?= isset($responseTo["user"]["avatar"]) ? $responseTo["user"]["avatar"] : "../src/static/img/default-avatar.png" ?>"
+                        src="<?= isset($responseTo["user"]["avatar"]) ? $responseTo["user"]["avatar"] : "./src/static/img/default-avatar.png" ?>"
                         alt="avatar <?= $responseTo["user"]["username"] ?>"
                         width="20"
                         height="20"
@@ -42,7 +44,7 @@
 ?>
             <div class="post__wrapper relative px-4 py-2 <?= isset($responseTo) ? ($responseTo["user"]["_id"]['$oid'] == $_SESSION["oid"] ? "hover:bg-yellow-700" : "hover:bg-zinc-800") : "hover:bg-zinc-800" ?>">
                 <img class="rounded-full"
-                    src="<?= isset($post["user"]["avatar"]) ? $post["user"]["avatar"] : "../src/static/img/default-avatar.png" ?>"
+                    src="<?= isset($post["user"]["avatar"]) ? $post["user"]["avatar"] : "./src/static/img/default-avatar.png" ?>"
                     alt="avatar <?= $post["user"]["username"] ?>"
                     width="50"
                     height="50"
@@ -54,8 +56,8 @@
                     </div>
                     <p><?= $post["post"]["content"] ?></p>
                 </div>
-                <a class="response-btn opacity-0 pointer-events-none absolute right-0 top-0 p-2 mr-4 bg-zinc-800 border border-zinc-700 hover:bg-zinc-900" href="/licence13/PHP-Forum/src/index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>&response=<?= $post["post"]["_id"]['$oid'] ?>">
-                    <img src="../src/static/img/icon-response-white.svg" alt="Respond" width="15" height="10" loading="lazy">
+                <a class="response-btn opacity-0 pointer-events-none absolute right-0 top-0 p-2 mr-4 bg-zinc-800 border border-zinc-700 hover:bg-zinc-900" href="index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>&response=<?= $post["post"]["_id"]['$oid'] ?>">
+                    <img src="./src/static/img/icon-response-white.svg" alt="Respond" width="15" height="10" loading="lazy">
                 </a>
             </div>
         </div>
@@ -69,8 +71,8 @@
 ?>
         <div class="bg-zinc-900 px-4 py-2 rounded-md-top flex justify-between">
             <p class="text-zinc-400">Répondre à <span class="text-zinc-200"><?= $postToRespond["user"]["username"] ?></span> au post "<?= substr($postToRespond["post"]["content"], 0, 50) ?><?= strlen($postToRespond["post"]["content"]) > 50 ? "..." : "" ?>"</p>
-            <a class="close-btn" href="/licence13/PHP-Forum/src/index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>">
-                    <img src="../src/static/img/icon-cross-white.svg" alt="Not respond" width="20" height="20" loading="lazy">
+            <a class="close-btn" href="index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>">
+                    <img src="./src/static/img/icon-cross-white.svg" alt="Not respond" width="20" height="20" loading="lazy">
                 </a>
         </div>
 <?php
@@ -79,7 +81,7 @@
         <form class="response_form bg-zinc-600 p-2 flex <?= isset($postToRespond) ? "rounded-md-bottom" : "rounded-md" ?>" action="index.php?mod=post&action=post<?= isset($postToRespond["post"]["_id"]['$oid']) ? "&response=".$postToRespond["post"]["_id"]['$oid'] : "" ?>" method="post" required>
             <input class="p-2 bg-transparent border-0 outline-none focus:outline-none" type="text" name="post" placeholder="Envoyer un post" required>
             <button class="send-btn flex justify-center items-center" type="submit" name="response">
-                <img src="../src/static/img/icon-send-white.svg" alt="Send" width="20" height="20" loading="lazy">
+                <img src="./src/static/img/icon-send-white.svg" alt="Send" width="20" height="20" loading="lazy">
             </button>
         </form>
     </div>
