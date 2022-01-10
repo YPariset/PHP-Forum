@@ -1,3 +1,4 @@
+
 <?php
     include_once "connection.php";
     include_once "./Model/PostModel.php";
@@ -17,7 +18,7 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: https://www.projet-web-training.ovh/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home");
+                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
             }
             
             switch ($action) {
@@ -41,10 +42,11 @@
 
                 case 'user':
                     if (isset($_GET["oid"])) {
+                        $userToCheck = NULL;
                         $oidPossible = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['oid']);
                         if ($oidPossible) {
-                            $userTocheck = $this->userModel->getOneByOID($_GET["oid"]);
-                            if($userTocheck == NULL) {
+                            $userToCheck = $this->userModel->getOneByOID($_GET["oid"]);
+                            if($userToCheck == NULL) {
                                 header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
                             }
                         } else {
@@ -90,7 +92,6 @@
                     break;
 
                 case 'update-profile':
-                    $posts = $this->model->getAll();
                     $users = $this->userModel->getAll();
                     $user = $this->userModel->getOneByOID($_SESSION["oid"]);
 

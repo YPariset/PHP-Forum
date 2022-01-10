@@ -17,6 +17,7 @@
         </a>
 <?php
     foreach ($users as $user) {
+        if ($user["user"]["_id"]['$oid'] != $_SESSION["oid"]) {
 ?>
         <a
             <?php
@@ -36,11 +37,12 @@
             <p class="text-sm text-zinc-100"><?= $user["user"]["username"] ?></p>
         </a>
 <?php
+        }
     }
 ?>
     </div>
 
-    <a class="aside__bottom flex justify-between items-center bg-zinc-900 px-4" href="">
+    <div class="aside__bottom flex justify-between items-center bg-zinc-900 px-4">
         <div class="flex items-center">
             <img class="mr-3 rounded-full" 
                 src="<?= isset($_SESSION["avatar"]) ? $_SESSION["avatar"] : "../src/static/img/default-avatar.png" ?>"
@@ -52,6 +54,8 @@
                 <p class="text-xs uppercase font-thin text-zinc-300">#<?= substr($_SESSION["oid"], 0, 4) ?></p>
             </div>
         </div>
-        <img src="../src/static/img/icon-settings-white.svg" alt="Settings" height="30" width="30">
-    </a>
+        <a class="hover:opacity-50" href="/licence13/PHP-Forum/src/index.php?mod=post&action=update-profile">
+            <img src="../src/static/img/icon-settings-white.svg" alt="Settings" height="30" width="30">
+        </a>
+    </div>
 </aside>
