@@ -30,6 +30,11 @@ aside.active {
   height: 50px;
 }
 
+.aside__bottom img.rounded-full {
+  height: 30px;
+  width: 30px;
+}
+
 /* post-view.php */
 
 main.active {
