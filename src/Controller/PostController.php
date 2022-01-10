@@ -1,74 +1,142 @@
+
 <?php
     include_once "connection.php";
     include_once "./Model/PostModel.php";
     include_once "./Model/UserModel.php";
-    include_once "./Model/ResponseModel.php";
     
     class PostController {
         private $manager;
         private $model;
         private $userModel;
-        private $responseModel;
     
         public function __construct($manager)
         {
             $this->manager = $manager;
             $this->model = new PostModel($this->manager);
             $this->userModel = new UserModel($this->manager);
-            $this->responseModel = new ReponseModel($this->manager);
 
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                $_GET["action"] = "home";
-                $action = "home";
+                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
             }
             
             switch ($action) {
                 case 'home':
                     $posts = $this->model->getAll();
-                    // include_once "./View/forum.php";
-                    foreach ($posts as $post) {
-                        $post["user"] = $this->userModel->getOneByOID($post["post"]["user_id"]['$oid']);
-                        $date = date("Y-m-d H:i:s",($post["post"]["created_at"]['$date']['$numberLong'] / 1000));
-                        echo '<img src="'.$post["user"]["avatar"].'" width="20" height="20">'."<p>".$post["user"]["username"]." (".$date.")</p>";
-                        echo "<p>".$post["post"]["content"]."</p>";
-                        echo '<a href="/licence13/PHP-Forum/src/index.php?mod=post&action=post&oid='.$post["post"]["_id"]['$oid'].'">See reponse(s)...</a><br>';
+                    $users = $this->userModel->getAll();
+                    if (isset($_GET["response"])){
+                        $reponseTestOID = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['response']);
+                        if ($reponseTestOID) {
+                            $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                            if ($postToRespond == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                            }
+                            $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                        }
                     }
+                    include_once "./View/post-view.php";
+                    break;
+
+                case 'user':
+                    if (isset($_GET["oid"])) {
+                        $userToCheck = NULL;
+                        $oidPossible = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['oid']);
+                        if ($oidPossible) {
+                            $userToCheck = $this->userModel->getOneByOID($_GET["oid"]);
+                            if($userToCheck == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                            }
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                        }
+                    } else {
+                        header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                    }
+                    $posts = $this->model->getAllByUserOID($_GET["oid"]);
+                    $users = $this->userModel->getAll();
+                    if (isset($_GET["response"])){
+                        $reponseTestOID = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['response']);
+                        if ($reponseTestOID) {
+                            $postToRespond =  $this->model->getOneByOID($_GET["response"]);
+                            if ($postToRespond == NULL) {
+                                header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                            }
+                            $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
+                        } else {
+                            header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                        }
+                    }
+                    include_once "./View/post-view.php";
                     break;
 
                 case 'post':
-                    $res = $this->model->getOneByOID($_GET["oid"]);
-                    $res["user"] = $this->userModel->getOneByOID($res["post"]["user_id"]['$oid']);
-                    $date = date("Y-m-d H:i:s",($res["post"]["created_at"]['$date']['$numberLong'] / 1000));
-                    echo '<img src="'.$res["user"]["avatar"].'" width="20" height="20">'."<p>".$res["user"]["username"]." (".$date.")</p>";
-                    echo "<p>".$res["post"]["content"]."</p><br>";
-                    $responses = $this->responseModel->getAllByPostOID($res["post"]["_id"]['$oid']);
-                    foreach ($responses as $response) {
-                        $response["user"] = $this->userModel->getOneByOID($response["response"]["user_id"]['$oid']);
-                        $date = date("Y-m-d H:i:s",($response["response"]["created_at"]['$date']['$numberLong'] / 1000));
-                        echo '<img src="'.$response["user"]["avatar"].'" width="20" height="20">'."<p>".$response["user"]["username"]." (".$date.")</p>";
-                        echo "<p>".$response["response"]["content"]."</p><br>";
-                        $nextResponses = $this->responseModel->getAllByResponseOID($response["response"]["_id"]['$oid']);
-                        if(count($nextResponses) > 0) { $this->getResponsesOfResponse ($nextResponses); }
+                    if (isset($_GET["response"])) {
+                        $data = [
+                            "content"=>htmlspecialchars($_POST["post"]),
+                            "created_at"=>new MongoDB\BSON\UTCDateTime((new DateTime('NOW'))->getTimestamp()*1000),
+                            "user_id"=>new MongoDB\BSON\ObjectID($_SESSION["oid"]),
+                            "post_id"=>new MongoDB\BSON\ObjectID($_GET["response"])
+                        ];
+                    } else {
+                        $data = [
+                            "content"=>htmlspecialchars($_POST["post"]),
+                            "created_at"=>new MongoDB\BSON\UTCDateTime((new DateTime('NOW'))->getTimestamp()*1000),
+                            "user_id"=>new MongoDB\BSON\ObjectID($_SESSION["oid"])
+                        ];
                     }
+                    $this->model->insertPost($data);
+                    header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
+                    break;
+
+                case 'update-profile':
+                    $users = $this->userModel->getAll();
+                    $user = $this->userModel->getOneByOID($_SESSION["oid"]);
+
+                    if ($user != NULL) {
+                        if (isset($_POST['update-profile'])) { 
+                          
+                            $data                   = new stdClass();
+                            $data->email            = $_POST['email'];
+                            $data->username         = $_POST['username'];
+                            $data->password         = hash('sha256', ($_POST['password']));
+                            
+                            $destination_path = "./static/img/";
+                            $target_path = $destination_path . basename( $_FILES["fileToUpload"]["name"]);
+                    
+                            move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_path);
+                            
+                            $path = $target_path;
+                            $type = pathinfo($path, PATHINFO_EXTENSION);
+                            $img = file_get_contents($path);
+                            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);    
+                            
+                            $data->avatar = $base64;
+                            
+                            $_id = $_SESSION['oid'];
+                            $user = ['email' => $data->email,
+                                            'username' => $data->username,
+                                            'password' => $data->password,
+                                            'user_id' => $_id,
+                                            'avatar' => $data->avatar
+                                        ];
+                            $updated = $this->userModel->updateUser($user);
+
+                            $_SESSION['username'] = $user['username'];
+                            $_SESSION['email'] = $user['email'];
+                            $_SESSION['avatar'] = $user['avatar'];
+
+                            $successUpdate = "Successfully updated";
+                        }
+                    }   
+                    require "./View/update.php";
                     break;
 
                 default:
-                    echo "Action doesn't exist or you don't have the rights !";
+                    header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
                     break;
-            }
-        }
-
-        private function getResponsesOfResponse($responses) 
-        {
-            foreach ($responses as $response) {
-                $response["user"] = $this->userModel->getOneByOID($response["response"]["user_id"]['$oid']);
-                $date = date("Y-m-d H:i:s",($response["response"]["created_at"]['$date']['$numberLong'] / 1000));
-                echo '<img src="'.$response["user"]["avatar"].'" width="20" height="20">'."<p>".$response["user"]["username"]." (".$date.")</p>";
-                echo "<p>".$response["response"]["content"]."</p><br>";
-                $nextResponses = $this->responseModel->getAllByResponseOID($response["response"]["_id"]['$oid']);
-                if(count($nextResponses) > 0) { $this->getResponsesOfResponse($nextResponses); }
             }
         }
     }

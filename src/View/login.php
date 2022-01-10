@@ -1,97 +1,41 @@
-<?php
-session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-if (isset($_POST['Submit'])) {
-    $manager = new MongoDB\Driver\Manager("mongodb+srv://Parizoo:Mareil95850@cluster0.ackwg.mongodb.net/test?authSource=admin&replicaSet=atlas-xfzeox-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true");
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $hash_password = hash('sha256', ($password));
-
-    try {
-        $query = new MongoDB\Driver\Query([]);
-        $rows = $manager->executeQuery("Suplblog.User", $query);
-
-        foreach ($rows as $row) {
-            if($row->email == $email && $row->password == $hash_password) {
-                // Set session
-                $_SESSION['user_id'] = $row->user_id;
-                $_SESSION['email'] = $row->email;
-                $_SESSION['username'] = $row->username;
-                header('Location: forum.php');
-            } else {
-                $error_msg = "Please be focus, try again !";
-            }
-        }
-    } catch (MongoDB\Driver\Exception\Exception $e) {
-
-        $filename = basename(__FILE__);
-
-        echo "The $filename script has experienced an error.\n";
-        echo "It failed with the following exception:\n";
-
-        echo "Exception:", $e->getMessage(), "\n";
-        echo "In file:", $e->getFile(), "\n";
-        echo "On line:", $e->getLine(), "\n";
-    }
-}
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link href="../static/lib/bootstrap-5.0.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="../static/lib/bootstrap-icons-1.5.0/bootstrap-icons.css" rel="stylesheet"/>
-    <title>Document</title>
-</head>
-<body>
-    <div class="container-fluid d-flex h-100 characterBackground">
-        <div class="row align-self-center w-100">
-            <div class="col-md-4 mx-auto auth-container">
-                <div class="align-self-center d-flex justify-content-end">
-                    <a class="bi bi-question-circle-fill" data-toggle="tooltip" title="Copyright © created with love and passion by Parizoo"></a>
-                </div>
-                <h3>Welcome !
-                </h3>
-                <p class="text-muted">I'm glad to see you here</p>
-                <form action="" method="post">
-                    <div class="mb-3">
-                        <label for="email" class="form-label text-muted small text-uppercase">Email</label>
-                        <input type="email" class="form-control" id="email" name="email"/>
+<main class="col-span-2 bg-characterBackground">
+    <div class="flex items-center justify-center h-full">
+        <div class="h-full w-full md:flex md:justify-center md:items-center md:w-form md:h-max bg-zinc-700 p-6 md:rounded-lg md:shadow-lg">
+            <div class="grid gap-4 w-full mt-10 md:mt-0">
+                <h3 class="w-full text-center text-xl text-bold text-zinc-200">Welcome !</h3>
+                <p class="w-full text-center text-zinc-300">I'm glad to see you here</p>
+                <form id="login" class="grid gap-4" action="/licence13/PHP-Forum/src/index.php?mod=user&action=login" method="post">
+                    <div class="grid gap-2">
+                        <label class="uppercase text-zinc-400 text-sm" for="email">Email</label>
+                        <input class="w-full bg-zinc-800 border border-zinc-900 rounded-sm p-2 focus:border focus:border-sky-500" type="email" id="email" name="email" required/>
                     </div>
-    
-                    <div class="mb-3">
-                        <label for="password" class="form-label text-muted small text-uppercase">Password</label>
-                        <input type="password" class="form-control" id="password" name="password"/>
+
+                    <div class="grid gap-2">
+                        <label class="uppercase text-zinc-400 text-sm" for="password">Password</label>
+                        <input class="w-full bg-zinc-800 border border-zinc-900 rounded-sm p-2 focus:border focus:border-sky-500" type="password" id="password" name="password" required/>
                     </div>
-    
-                    <div class="mb-3">
-                        <button type="submit" name="Submit" class="btn btn-primary btn-lg btn-block w-100">Login</button>
-                    </div>
-    
-                    <span class="d-flex pt-3 justify-content-center space">
-                        Don't have an account ?  
-                        <a class="pleft" href="signup.php">Sign up</a>
-                    </span>
+                    
+                    <button class="w-full bg-zinc-700 bg-sky-600 transition-all duration-150 ease-in-out hover:bg-sky-500 hover:transition-all hover:duration-150 hover:ease-in-out border border-zinc-800 rounded-sm p-2" type="submit" name="login">Login</button>
                 </form>
-                <br>
-                <span class="error-msg alert-danger d-flex justify-content-center">
-                 <?= isset($error_msg) ? $error_msg : null; ?>
+                <span class="flex items-center text-md text-thin text-zinc-600">
+                    Need an account ?
+                    <a class="ml-2 text-sky-600 transition-all duration-150 ease-in-out hover:text-sky-500 hover:transition-all hover:duration-150 hover:ease-in-out " href="/licence13/PHP-Forum/src/index.php?mod=user&action=signup">Sign up</a>
                 </span>
-                <span class="success-msg alert-success d-flex justify-content-center">
-                 <?= isset($success_msg) ? $success_msg: null; ?>
-                </span>
+<?php
+    if(isset($emailError)) {
+?>
+                <span class="bg-red-600 p-4 rounded-sm text-center"><?= $emailError ?></span>
+<?php   
+    }
+
+    if(isset($passwordError)) {
+?>
+                <span class="bg-red-600 p-4 rounded-sm text-center"><?= $passwordError ?></span>
+<?php   
+    }
+?>
+                
             </div>
         </div>
     </div>
-</body>
-</html>
+</main>

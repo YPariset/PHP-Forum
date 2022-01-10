@@ -14,7 +14,25 @@ class PostModel {
 
     public function getAll(){
         $filter  = [];
-        $options = [];
+        $options = ['sort'=>array('created_at'=>1)];
+
+        $query = new MongoDB\Driver\Query($filter, $options);
+
+        $cursor = $this->manager->executeQuery($this->collection, $query);
+
+        $allResult = [];
+
+        foreach ($cursor as $document) {
+            $post = json_decode(json_encode($document), true);
+            $result = ["post"=>$post, "user"=>[]];
+            array_push($allResult, $result);
+        }
+        return $allResult;
+    }
+
+    public function getAllByUserOID($userOid){
+        $filter  = ["user_id"=>new MongoDB\BSON\ObjectID($userOid)];
+        $options = ['sort'=>array('created_at'=>1)]; 
 
         $query = new MongoDB\Driver\Query($filter, $options);
 
@@ -44,10 +62,19 @@ class PostModel {
             $post = json_decode(json_encode($document), true);
 
             $result["post"] = $post;
-
-            
         }
 
         return $result;
+    }
+
+    public function insertPost($data)
+    {
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $test = $bulk->insert($data);
+        if ($test == NULL) {
+            return false;
+        }
+        $this->manager->executeBulkWrite($this->collection, $bulk);
+        return true;
     }
 }
