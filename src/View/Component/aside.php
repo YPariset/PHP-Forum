@@ -9,7 +9,7 @@
                     echo 'class="user__wrapper flex items-center px-2 py-1 rounded-md bg-zinc-700 transition-all duration-150 ease-in-out hover:bg-zinc-500 hover:transition-all hover:duration-150 hover:ease-in-out"';
                 }
             ?>
-            href="/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=home">  
+            href="/licence13/PHP-Forum/src/index.php?mod=post&action=home">  
             <div class="icon-wrapper flex items-center mr-3">
                 <img class="mx-auto" src="../src/static/img/icon-all-white.svg" alt="all icon" width="20" height="20" loading="lazy">
             </div>  
@@ -52,10 +52,6 @@
                 <p class="text-xs uppercase font-thin text-zinc-300">#<?= substr($_SESSION["oid"], 0, 4) ?></p>
             </div>
         </div>
-        <div>
-            <a href="/licence19/Projects/PHP-Forum/src/index.php?mod=post&action=update-profile">
-                <img class="bg-transparent" src="../src/static/img/icon-settings-white.svg" alt="Settings" height="30" width="30">
-            </a>
-        </div>
-    </div>
+        <img src="../src/static/img/icon-settings-white.svg" alt="Settings" height="30" width="30">
+    </a>
 </aside>

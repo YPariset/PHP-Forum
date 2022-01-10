@@ -1,3 +1,4 @@
+@@ -0,0 +1,107 @@
 <?php include_once "../src/View/Component/aside.php"; ?>
 
 <main class="bg-zinc-700 h-screen">

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="./static/css/style.css">
     <title>Suplblog</title>
 </head>
-<body class="h-screen relative md:grid">
+<body class="bg-zinc-700 h-screen relative md:grid">
     <?php
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);

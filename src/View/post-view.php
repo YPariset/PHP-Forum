@@ -5,7 +5,7 @@
         <img class="burger block mr-4" src="../src/static/img/icon-burger-white.svg" alt="avatar" width="30" height="20" loading="lazy">
         <p class="flex items-center">
             <img class="opacity-40 mr-2" src="../src/static/img/icon-all-white.svg" alt="all icon" width="15" height="15" loading="lazy">
-            <?= isset($user["username"]) ? $user["username"] : "All" ?>
+            <?= isset($userToCheck["username"]) == "user" ? $userToCheck["username"] : "All" ?>
         </p>
     </div>
     <div class="main__responses__wrapper <?= isset($postToRespond) ? "response" : "" ?> py-4 overflow-auto">
@@ -67,8 +67,11 @@
 <?php
     if (isset($postToRespond)) {
 ?>
-        <div class="bg-zinc-900 px-4 py-2 rounded-md-top">
+        <div class="bg-zinc-900 px-4 py-2 rounded-md-top flex justify-between">
             <p class="text-zinc-400">Répondre à <span class="text-zinc-200"><?= $postToRespond["user"]["username"] ?></span> au post "<?= substr($postToRespond["post"]["content"], 0, 50) ?><?= strlen($postToRespond["post"]["content"]) > 50 ? "..." : "" ?>"</p>
+            <a class="close-btn" href="/licence13/PHP-Forum/src/index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>">
+                    <img src="../src/static/img/icon-cross-white.svg" alt="Not respond" width="20" height="20" loading="lazy">
+                </a>
         </div>
 <?php
     }

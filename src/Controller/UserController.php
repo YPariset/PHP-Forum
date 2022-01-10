@@ -48,7 +48,7 @@
                         if ($userByEmail == NULL) {
                             $userByUsername = $this->model->getOneByUsername($_POST['username']);
                             if ($userByUsername == NULL) {
-                                $passwordConfirm = preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,50}$/', $_POST['password']);
+                                $passwordConfirm = preg_match('/^(?=.*\d)(?=.*[@#\-\*\`\~\,\<\>\/_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-\*\`\~\,\<\>\/_$%^&+=§!\?]{8,50}$/', $_POST['password']);
                                 if($passwordConfirm) {
                                     $passwordHashed = hash('sha256', ($_POST['password']));
                                     $data = [

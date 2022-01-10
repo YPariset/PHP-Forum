@@ -1,4 +1,3 @@
-
 <?php
     include_once "connection.php";
     include_once "./Model/PostModel.php";
@@ -44,8 +43,8 @@
                     if (isset($_GET["oid"])) {
                         $oidPossible = preg_match('/^[0-9A-Fa-f]{24}$/', $_GET['oid']);
                         if ($oidPossible) {
-                            $user = $this->userModel->getOneByOID($_GET["oid"]);
-                            if($user == NULL) {
+                            $userTocheck = $this->userModel->getOneByOID($_GET["oid"]);
+                            if($userTocheck == NULL) {
                                 header("Location: https://www.projet-web-training.ovh/licence13/PHP-Forum/src/index.php?mod=post&action=home");
                             }
                         } else {
