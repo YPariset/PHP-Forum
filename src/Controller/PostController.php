@@ -18,7 +18,7 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
             }
             
             switch ($action) {
@@ -30,11 +30,11 @@
                         if ($reponseTestOID) {
                             $postToRespond =  $this->model->getOneByOID($_GET["response"]);
                             if ($postToRespond == NULL) {
-                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                             }
                             $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
                         } else {
-                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                            header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                         }
                     }
                     include_once "./src/View/post-view.php";
@@ -47,13 +47,13 @@
                         if ($oidPossible) {
                             $userToCheck = $this->userModel->getOneByOID($_GET["oid"]);
                             if($userToCheck == NULL) {
-                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                             }
                         } else {
-                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                            header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                         }
                     } else {
-                        header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                        header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                     }
                     $posts = $this->model->getAllByUserOID($_GET["oid"]);
                     $users = $this->userModel->getAll();
@@ -62,11 +62,11 @@
                         if ($reponseTestOID) {
                             $postToRespond =  $this->model->getOneByOID($_GET["response"]);
                             if ($postToRespond == NULL) {
-                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=user&oid=".$_GET["oid"]);
                             }
                             $postToRespond["user"] = $this->userModel->getOneByOID($postToRespond["post"]["user_id"]['$oid']);
                         } else {
-                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=user&oid=".$_GET["oid"]);
+                            header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=user&oid=".$_GET["oid"]);
                         }
                     }
                     include_once "./src/View/post-view.php";
@@ -88,7 +88,7 @@
                         ];
                     }
                     $this->model->insertPost($data);
-                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                    header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                     break;
 
                 case 'update-profile':
@@ -135,7 +135,7 @@
                     break;
 
                 default:
-                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                    header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                     break;
             }
         }

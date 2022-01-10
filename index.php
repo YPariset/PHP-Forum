@@ -43,7 +43,7 @@
     if(isset($_GET["mod"])) {
         $mod = $_GET["mod"];
     } else {
-        header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=user&action=login");
+        header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=user&action=login");
     }
 
     switch ($mod) {
@@ -52,7 +52,7 @@
                 include_once "./src/Controller/PostController.php";
                 $controler = new PostController($manager);
             } else {
-                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=user&action=login");
+                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=user&action=login");
             }
             break;
         
@@ -62,7 +62,7 @@
             break;
         
         default:
-            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+            header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
             break;
     }
 ?>

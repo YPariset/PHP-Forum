@@ -14,7 +14,7 @@
             if(isset($_GET["action"])) {
                 $action = $_GET["action"];
             } else {
-                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=user&action=login");
+                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=user&action=login");
             }
             
             switch ($action) {
@@ -31,7 +31,7 @@
                                 if (isset($user["avatar"])) {
                                     $_SESSION["avatar"] = $user["avatar"];
                                 }
-                                header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                                header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                             } else if ($user["password"] != hash('sha256', ($_POST['password']))) {
                                 $passwordError = "Incorrect password";
                             }
@@ -70,7 +70,7 @@
                                             $_SESSION["password"] = $user["password"];
                                             $_SESSION["username"] = $user["username"];
                                             $_SESSION["admin"] = $user["admin"];
-                                            header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                                            header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                                         } else {
                                             $error = "An error as occured, try later";
                                         }
@@ -92,11 +92,11 @@
                 
                 case "logout":
                     session_destroy();
-                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=user&action=login");
+                    header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=user&action=login");
                     break;
 
                 default:
-                    header("Location: http://".$_SERVER["HTTP_HOST"]."/index.php?mod=post&action=home");
+                    header("Location: http://".$_SERVER["HTTP_HOST"].$_SERVER["PHP_SELF"]."?mod=post&action=home");
                     break;
             }
         }
