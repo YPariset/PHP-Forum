@@ -29,7 +29,7 @@
                                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
                                     </div>
-                                <input type="text" id="email" name="email" class="w-80 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus: block w-full pl-10 p-2.5  dark:dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="<?= $_SESSION['email'] ?>">
+                                <input type="text" id="email" name="email" class="w-80 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus: block w-full pl-10 p-2.5  dark:dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="<?= $_SESSION['email'] ?>" required>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-zinc-800 rounded-l-md border border-r-0 border-gray-300 dark:bg-zinc-600 dark:text-gray-400 dark:border-gray-600">
                         @
                         </span>
-                        <input type="text" id="username" name="username" class="w-80 rounded-none rounded-r-lg bg-white border border-gray-300 text-gray-900  block flex-1 min-w-0 text-sm border-gray-300 p-2.5  dark:dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-600" placeholder="<?= $_SESSION['username'] ?>">
+                        <input type="text" id="username" name="username" class="w-80 rounded-none rounded-r-lg bg-white border border-gray-300 text-gray-900  block flex-1 min-w-0 text-sm border-gray-300 p-2.5  dark:dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-600" placeholder="<?= $_SESSION['username'] ?>" required>
                     </div>
 
                     <div>
@@ -63,7 +63,7 @@
                             loading="lazy">
                         </span>
                         
-                        <input name="fileToUpload" id="fileToUpload" class="text-sm ml-4 text-gray-900 bg-gray-50 rounded-lg border border-gray-300" aria-describedby="user_avatar_help" type="file">
+                        <input name="fileToUpload" id="fileToUpload" class="text-sm ml-4 text-gray-900 bg-gray-50 rounded-lg border border-gray-300" aria-describedby="user_avatar_help" type="file" required>
 
                         </div>
                     </div>
