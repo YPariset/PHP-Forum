@@ -21,6 +21,11 @@ aside.active {
   margin-top: 0.5rem;
 }
 
+.user__wrapper img {
+  width: 30px;
+  height: 30px;
+}
+
 .aside__bottom {
   height: 50px;
 }
@@ -51,6 +56,11 @@ main.active {
   grid-template-columns: calc(50px + 0.75rem) 1fr;
 }
 
+.response__wrapper img.rounded-full {
+  width: 15px;
+  height: 15px;
+}
+
 .response__thread {
   padding: 8px 0.5rem 0 24px;
 }
@@ -63,6 +73,11 @@ main.active {
   display: grid;
   grid-template-columns: 50px 1fr;
   gap: 0.75rem;
+}
+
+.post__wrapper img.rounded-full {
+  width: 50px;
+  height: 50px;
 }
 
 .response-btn {
