@@ -61,6 +61,10 @@
                                     if ($created) {
                                         $user = $this->model->getOneByEmail($_POST['email']);
                                         if ($user != NULL) {
+                                            if(isset($_SESSION["oid"])) {
+                                                session_destroy();
+                                                session_start();
+                                            }
                                             $_SESSION["oid"] = $user["_id"]['$oid'];
                                             $_SESSION["email"] = $user["email"];
                                             $_SESSION["password"] = $user["password"];

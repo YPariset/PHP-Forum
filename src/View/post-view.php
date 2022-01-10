@@ -1,6 +1,13 @@
 <?php include_once "../src/View/Component/aside.php"; ?>
 
-<main class="bg-zinc-700 h-screen">
+<main class="bg-zinc-700 transition-all duration-200 ease-in-out h-screen md:translate-x-0">
+    <div class="flex p-4 bg-zinc-800 md:hidden">
+        <img class="burger block mr-4" src="../src/static/img/icon-burger-white.svg" alt="avatar" width="30" height="20" loading="lazy">
+        <p class="flex items-center">
+            <img class="opacity-40 mr-2" src="../src/static/img/icon-all-white.svg" alt="all icon" width="15" height="15" loading="lazy">
+            <?= isset($user["username"]) ? $user["username"] : "All" ?>
+        </p>
+    </div>
     <div class="main__responses__wrapper <?= isset($postToRespond) ? "response" : "" ?> py-4 overflow-auto">
 <?php
     foreach ($posts as $post) {
@@ -47,7 +54,7 @@
                     </div>
                     <p><?= $post["post"]["content"] ?></p>
                 </div>
-                <a class="response-btn absolute right-0 top-0 p-2 mr-4 bg-zinc-800 border border-zinc-700 hover:bg-zinc-900" href="/licence13/PHP-Forum/src/index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>&response=<?= $post["post"]["_id"]['$oid'] ?>">
+                <a class="response-btn opacity-0 pointer-events-none absolute right-0 top-0 p-2 mr-4 bg-zinc-800 border border-zinc-700 hover:bg-zinc-900" href="/licence13/PHP-Forum/src/index.php?mod=post&action=<?= $_GET["action"] == "user" ? "user&oid=".$_GET["oid"] : "home" ?>&response=<?= $post["post"]["_id"]['$oid'] ?>">
                     <img src="../src/static/img/icon-response-white.svg" alt="Respond" width="15" height="10" loading="lazy">
                 </a>
             </div>

@@ -1,5 +1,5 @@
-<aside class="bg-zinc-800 h-screen">
-    <div class="aside__users__container p-2 overflow-hidden">
+<aside class="h-screen absolute top-0 left-0 translate-x-full-invert transition-all duration-200 ease-in-out md:translate-x-0 z-10 md:relative">
+    <div class="aside__users__container bg-zinc-800 p-2 overflow-hidden">
         <a
             <?php
                 if(isset($_GET["oid"])){
@@ -40,7 +40,7 @@
 ?>
     </div>
 
-    <a class="aside__bottom flex justify-between items-center w-full bg-zinc-900 px-4" href="">
+    <a class="aside__bottom flex justify-between items-center bg-zinc-900 px-4" href="">
         <div class="flex items-center">
             <img class="mr-3 rounded-full" 
                 src="<?= isset($_SESSION["avatar"]) ? $_SESSION["avatar"] : "../src/static/img/default-avatar.png" ?>"

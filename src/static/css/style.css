@@ -1,10 +1,17 @@
 body {
-  display: grid;
   grid-template-columns: 250px 1fr;
   color: white;
 }
 
-/* post-view.php */
+/* aside.php */
+
+aside {
+  width: 250px;
+}
+
+aside.active {
+  transform: translateX(0);
+}
 
 .aside__users__container {
   height: calc(100% - 50px);
@@ -12,6 +19,16 @@ body {
 
 .user__wrapper:not(.user__wrapper:first-child) {
   margin-top: 0.5rem;
+}
+
+.aside__bottom {
+  height: 50px;
+}
+
+/* post-view.php */
+
+main.active {
+  transform: translateX(250px);
 }
 
 .post__container:not(.post__container:last-child) {
@@ -43,15 +60,11 @@ body {
 }
 
 .response-btn {
-  transform: translate3d(0, -50%, 0);
+  transform: translateY(-50%);
 }
 
 .post__date {
   line-height: 1.2rem !important;
-}
-
-.aside__bottom {
-  height: 50px;
 }
 
 .response_form {
@@ -63,15 +76,30 @@ body {
 }
 
 .main__responses__wrapper:not(.main__responses__wrapper.response) {
-  height: calc(100% - (50px + (0.5rem * 2)));
+  height: calc(100% - (50px + (0.5rem * 2)) - 56px);
 }
 
 .main__responses__wrapper.response {
-  height: calc(100% - (50px + (0.5rem * 2)) - (24px + (0.5rem * 2)));
+  height: calc(100% - (50px + (0.5rem * 2)) - (24px + (0.5rem * 2)) - 56px);
+}
+
+@media screen and (min-width: 768px) {
+  .main__responses__wrapper:not(.main__responses__wrapper.response) {
+    height: calc(100% - (50px + (0.5rem * 2)));
+  }
+
+  .main__responses__wrapper.response {
+    height: calc(100% - (50px + (0.5rem * 2)) - (24px + (0.5rem * 2)));
+  }
 }
 
 .send-btn {
   width: 50px;
+}
+
+.post__wrapper:hover .response-btn {
+  opacity: 1 !important;
+  pointer-events: all !important;
 }
 
 /* login.php && signup.php */
