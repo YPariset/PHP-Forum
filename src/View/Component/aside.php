@@ -11,7 +11,7 @@
             ?>
             href="/licence13/PHP-Forum/src/index.php?mod=post&action=home">  
             <div class="icon-wrapper flex items-center mr-3">
-                <img class="mx-auto" src="../src/static/img/icon-all-black.svg" alt="all icon" width="20" height="20" loading="lazy">
+                <img class="mx-auto" src="../src/static/img/icon-all-white.svg" alt="all icon" width="20" height="20" loading="lazy">
             </div>  
             <p>All</p>
         </a>
@@ -28,11 +28,7 @@
             ?>
             href="/licence13/PHP-Forum/src/index.php?mod=post&action=user&oid=<?= $user["user"]["_id"]['$oid'] ?>">
             <img class="mr-3 rounded-full" 
-                src="<?php if (isset($user["user"]["avatar"])) {
-                    echo $user["user"]["avatar"];
-                } else {
-                    echo "../src/static/img/default-avatar.png";
-                } ?>" 
+                src="<?= isset($user["user"]["avatar"]) ? $user["user"]["avatar"] : "../src/static/img/default-avatar.png" ?>" 
                 alt="avatar <?= $user["user"]["username"] ?>"
                 width="30"
                 height="30"
@@ -47,12 +43,7 @@
     <a class="aside__bottom flex justify-between items-center w-full bg-zinc-900 px-4" href="">
         <div class="flex items-center">
             <img class="mr-3 rounded-full" 
-                src="<?php if (isset($_SESSION["avatar"])) {
-                    echo $_SESSION["avatar"];
-                } else {
-                    echo "../src/static/img/default-avatar.png";
-                } ?>" 
-                alt="avatar <?= $_SESSION["username"] ?>"
+                src="<?= isset($_SESSION["avatar"]) ? $_SESSION["avatar"] : "../src/static/img/default-avatar.png" ?>"
                 width="30"
                 height="30"
                 loading="lazy">

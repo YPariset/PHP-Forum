@@ -35,11 +35,7 @@
 ?>
             <div class="post__wrapper relative px-4 py-2 <?= isset($responseTo) ? ($responseTo["user"]["_id"]['$oid'] == $_SESSION["oid"] ? "hover:bg-yellow-700" : "hover:bg-zinc-800") : "hover:bg-zinc-800" ?>">
                 <img class="rounded-full"
-                    src="<?php if (isset($post["user"]["avatar"])) {
-                        echo $post["user"]["avatar"];
-                    } else {
-                        echo "../src/static/img/default-avatar.png";
-                    } ?>"
+                    src="<?= isset($post["user"]["avatar"]) ? $post["user"]["avatar"] : "../src/static/img/default-avatar.png" ?>"
                     alt="avatar <?= $post["user"]["username"] ?>"
                     width="50"
                     height="50"
